@@ -1,5 +1,7 @@
 package com.example.benchmarks;
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
@@ -13,15 +15,17 @@ abstract public class BenchMarksRunner {
     private final static Integer MEASUREMENT_ITERATIONS = 2;
     private final static Integer WARMUP_ITERATIONS = 2;
 
-    @Test
-    public void executeJmhRunner() throws RunnerException {
-        Options opt = new OptionsBuilder()
+    private Options options;
+
+    @BeforeEach
+     void setUp(){
+        options = new OptionsBuilder()
                 // set the class name regex for benchmarks to search for to the current class
-                .include(BenchMarkAppTests.class.getSimpleName())
+                .include("\\." + this.getClass().getSimpleName() + "\\.")
                 .warmupIterations(WARMUP_ITERATIONS)
                 .measurementIterations(MEASUREMENT_ITERATIONS)
-                // do not use forking or the benchmark methods will not see references stored within its class
-                .forks(0)
+                // do not use forking (if Spring @Autowired is used) or the benchmark methods will not see references stored within its class
+                .forks(3)
                 .threads(3)
                 .shouldDoGC(true)
                 .shouldFailOnError(true)
@@ -30,7 +34,10 @@ abstract public class BenchMarksRunner {
                 .shouldFailOnError(true)
                 .jvmArgs("-server")
                 .build();
+    }
 
-        new Runner(opt).run();
+    @Test
+    public void executeJmhRunner() throws RunnerException {
+        new Runner(options).run();
     }
 }

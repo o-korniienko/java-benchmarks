@@ -1,4 +1,4 @@
-package com.example.benchmarks;
+package com.example.benchmarks.benchmarks;
 
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;

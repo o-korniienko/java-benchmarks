@@ -1,5 +1,6 @@
-package com.example.benchmarks;
+package com.example.benchmarks.service;
 
+import com.example.benchmarks.benchmarks.MyBenchMarkState;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
